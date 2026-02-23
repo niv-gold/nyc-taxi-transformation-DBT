@@ -9,3 +9,4 @@ logs/
 
 # ignore sensitive system files
 .scripts/
+dbt_internal_packages/

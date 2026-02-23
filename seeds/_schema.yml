@@ -1,0 +1,28 @@
+version: 2
+
+seeds:
+  - name: dim_time_1980_2099          # <-- file name without .csv
+    description: "Time dimension seed"
+    config:
+      alias: dim_time        # 👈 This controls the Snowflake table name
+      quote_columns: false
+      column_types:
+        date_key: number(8,0)
+        date_day: date
+        year: number(4,0)
+        quarter: number(1,0)
+        month: number(2,0)
+        month_name: varchar(20)
+        month_abbrev: varchar(10)
+        day: number(2,0)
+        day_of_week: number(1,0)
+        day_name: varchar(20)
+        week_of_year: number(2,0)
+        is_weekend: boolean
+        is_month_start: boolean
+        is_month_end: boolean
+        is_quarter_start: boolean
+        is_quarter_end: boolean
+        is_year_start: boolean
+        is_year_end: boolean
+        LOAD_TS: timestamp # 👈 This was added manually
