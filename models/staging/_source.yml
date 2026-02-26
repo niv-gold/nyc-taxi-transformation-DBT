@@ -1,7 +1,7 @@
 version: 2
 sources:
   - name: seeds    
-    schema: RAW
+    schema: RAW_SEEDS
     tables:
       - name: dim_time
         description: "Staging model for the time dimension"

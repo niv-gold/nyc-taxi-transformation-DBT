@@ -1,6 +1,6 @@
 version: 2
 models:
-  - name: stg_dim_time
+  - name: STG_DIM_TIME
     description: "Staging model for the time dimension"
     config:
       schema: STAGING
@@ -9,23 +9,23 @@ models:
         description: "The date key in YYYYMMDD format"
       - name: date_day
         description: "The date in date format"
-      - name: year
+      - name: year_number
         description: "The year component of the date"
-      - name: quarter
+      - name: quarter_number
         description: "The quarter component of the date"
-      - name: month
+      - name: month_number
         description: "The month component of the date"
       - name: month_name
         description: "The full name of the month"
       - name: month_abbrev
         description: "The abbreviated name of the month"
-      - name: day
+      - name: day_of_month
         description: "The day component of the date"
       - name: day_of_week
         description: "The day of the week (1=Monday, 7=Sunday)"
       - name: day_name
         description: "The full name of the day of the week"
-      - name: week_of_year
+      - name: week_number
         description: "The week of the year (1-53)"
       - name: is_weekend
         description: "Boolean indicating if the date is a weekend"
@@ -41,5 +41,11 @@ models:
         description: "Boolean indicating if the date is the first day of the year"
       - name: is_year_end
         description: "Boolean indicating if the date is the last day of the year"
+      - name: ingest_ts
+        description: "Timestamp from source row ingestion"
+      - name: record_source
+        description: "Record source identifier"
       - name: load_ts
         description: "Timestamp when the record was loaded"
+      - name: hdiff
+        description: "Hashdiff built from the business-descriptive attributes"
