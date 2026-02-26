@@ -3,3 +3,10 @@
 target/
 dbt_packages/
 logs/
+
+# virtual environment
+.venv*/
+
+# ignore sensitive system files
+.scripts/
+dbt_internal_packages/

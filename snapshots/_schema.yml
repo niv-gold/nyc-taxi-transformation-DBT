@@ -1,0 +1,57 @@
+version: 2
+snapshots:
+  - name: SNSH_DIM_TIME
+    description: "Snapshot of the staged time dimension with SCD2 history"
+    columns:
+      - name: date_key
+        description: "Date surrogate key in YYYYMMDD format"
+      - name: date_day
+        description: "Calendar date"
+      - name: year_number
+        description: "Year component of the date"
+      - name: quarter_number
+        description: "Quarter component of the date"
+      - name: month_number
+        description: "Month component of the date"
+      - name: month_name
+        description: "Full month name"
+      - name: month_abbrev
+        description: "Abbreviated month name"
+      - name: day_of_month
+        description: "Day number within the month"
+      - name: day_of_week
+        description: "Day of week number"
+      - name: day_name
+        description: "Full day name"
+      - name: week_number
+        description: "Week number in the year"
+      - name: is_weekend
+        description: "Flag indicating weekend dates"
+      - name: is_month_start
+        description: "Flag indicating first day of month"
+      - name: is_month_end
+        description: "Flag indicating last day of month"
+      - name: is_quarter_start
+        description: "Flag indicating first day of quarter"
+      - name: is_quarter_end
+        description: "Flag indicating last day of quarter"
+      - name: is_year_start
+        description: "Flag indicating first day of year"
+      - name: is_year_end
+        description: "Flag indicating last day of year"
+      - name: ingest_ts
+        description: "Source ingestion timestamp from seed load"
+      - name: record_source
+        description: "Record lineage/source identifier"
+      - name: load_ts
+        description: "Snapshot load timestamp"
+      - name: hdiff
+        description: "Hashdiff used for change detection"
+      - name: dbt_scd_id
+        description: "dbt-generated unique identifier for a snapshot version"
+      - name: dbt_updated_at
+        description: "dbt timestamp used to identify record update timing"
+      - name: dbt_valid_from
+        description: "Timestamp when this snapshot version became valid"
+      - name: dbt_valid_to
+        description: "Timestamp when this snapshot version stopped being valid"

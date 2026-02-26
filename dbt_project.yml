@@ -1,8 +1,7 @@
-
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'nyc-taxi'
+name: 'nyc_taxi'
 version: '1.0.0'
 config-version: 2
 
@@ -12,18 +11,24 @@ profile: 'default'
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!
-model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
-seed-paths: ["seeds"]
-macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
+model-paths:
+  - models
+analysis-paths:
+  - analyses
+test-paths:
+  - tests
+seed-paths:
+  - seeds
+macro-paths:
+  - macros
+snapshot-paths:
+  - snapshots
 
-target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
-  - "target"
-  - "dbt_packages"
-
+target-path: target # directory which will store compiled SQL files
+clean-targets:
+  # directories to be removed by `dbt clean`
+  - target
+  - dbt_packages
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -36,15 +41,25 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  nyc-taxi:
-    # Applies to all files under models/example/
-    models:
-      staging:
-        schema: STAGING
-        +materialized: table
-      refined:
-        schema: REFINE
-        +materialized: table
-      marts:
-        schema: MARTS
-        +materialized: table
+  nyc_taxi:
+    staging:
+      +schema: STAGING
+    refine:
+      +schema: REFINE
+    marts:
+      +schema: MARTS
+
+# Configuring seeds
+seeds:
+  +schema: RAW_SEEDS
+  nyc_taxi:
+    # Applies to all files under seeds/        
+    +post-hook:
+      - alter table {{ this }} add column if not exists load_ts timestamp_ntz
+      - update {{ this }} set load_ts = '{{ run_started_at }}'::timestamp_ntz
+        where load_ts is null
+
+snapshots:
+  nyc_taxi:
+    # Applies to all files under snapshots/
+    +schema: SNAPSHOT

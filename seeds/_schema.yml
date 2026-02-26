@@ -1,0 +1,82 @@
+version: 2
+
+seeds:
+  - name: dim_time_1980_2099          # <-- file name without .csv
+    description: "Time dimension seed"
+    config:
+      alias: dim_time        # 👈 This controls the Snowflake table name
+      quote_columns: false
+      column_types:
+        date_key: number(8,0)
+        date_day: date
+        year: number(4,0)
+        quarter: number(1,0)
+        month: number(2,0)
+        month_name: varchar(20)
+        month_abbrev: varchar(10)
+        day: number(2,0)
+        day_of_week: number(1,0)
+        day_name: varchar(20)
+        week_of_year: number(2,0)
+        is_weekend: boolean
+        is_month_start: boolean
+        is_month_end: boolean
+        is_quarter_start: boolean
+        is_quarter_end: boolean
+        is_year_start: boolean
+        is_year_end: boolean
+        LOAD_TS: timestamp # 👈 This was added manually
+    columns:
+      - name: date_key
+        description: "Surrogate key for calendar date in YYYYMMDD format"
+        tests:
+          - not_null
+          - unique
+      - name: date_day
+        description: "Calendar date"
+        tests:
+          - not_null
+      - name: quarter
+        description: "Quarter number"
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+                quote: false
+      - name: month
+        description: "Month number"
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                quote: false
+      - name: day_of_week
+        description: "Day of week where 1=Monday and 7=Sunday"
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7]
+                quote: false
+      - name: week_of_year
+        description: "ISO-like week number"
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
+                quote: false
+      - name: is_weekend
+        description: "Weekend indicator"
+      - name: is_month_start
+        description: "First day of month indicator"
+      - name: is_month_end
+        description: "Last day of month indicator"
+      - name: is_quarter_start
+        description: "First day of quarter indicator"
+      - name: is_quarter_end
+        description: "Last day of quarter indicator"
+      - name: is_year_start
+        description: "First day of year indicator"
+      - name: is_year_end
+        description: "Last day of year indicator"
+      - name: LOAD_TS
+        description: "Ingestion timestamp"

@@ -1,0 +1,130 @@
+version: 2
+models:
+  - name: DIM_TIME_SPINE
+    description: "Spine model for the time dimension"
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: date_key
+        description: "The date key in YYYYMMDD format"
+        data_type: number(8,0)
+      - name: date_day
+        description: "The date in date format"
+        data_type: date
+      - name: year_number
+        description: "The year component of the date"
+        data_type: number(4,0)
+      - name: quarter_number
+        description: "The quarter component of the date"
+        data_type: number(1,0)
+      - name: month_number
+        description: "The month component of the date"
+        data_type: number(2,0)
+      - name: month_name
+        description: "The full name of the month"
+        data_type: varchar(20)
+      - name: month_abbrev
+        description: "The abbreviated name of the month"
+        data_type: varchar(10)
+      - name: day_number
+        description: "The day component of the date"
+        data_type: number(2,0)
+      - name: day_of_week
+        description: "The day of the week (1=Monday, 7=Sunday)"
+        data_type: number(1,0)
+      - name: day_name
+        description: "The full name of the day of the week"
+        data_type: varchar(20)
+      - name: week_number
+        description: "The week of the year (1-53)"
+        data_type: number(2,0)
+      - name: is_weekend
+        description: "Boolean indicating if the date is a weekend"
+        data_type: boolean
+      - name: is_month_start
+        description: "Boolean indicating if the date is the first day of the month"
+        data_type: boolean
+      - name: is_month_end
+        description: "Boolean indicating if the date is the last day of the month"
+        data_type: boolean
+      - name: is_quarter_start
+        description: "Boolean indicating if the date is the first day of the quarter"
+        data_type: boolean
+      - name: is_quarter_end
+        description: "Boolean indicating if the date is the last day of the quarter"
+        data_type: boolean
+      - name: is_year_start
+        description: "Boolean indicating if the date is the first day of the year"
+        data_type: boolean
+      - name: is_year_end
+        description: "Boolean indicating if the date is the last day of the year"
+        data_type: boolean
+      - name: load_ts
+        description: "Timestamp when the record was loaded"
+        data_type: timestamp_ltz
+
+  - name: DIM_TIME
+    description: "Time dimension model"
+    config:
+      materialized: table
+    columns:
+      - name: date_key
+        description: "The date key in YYYYMMDD format"
+        data_type: number(8,0)
+      - name: date_day
+        description: "The date in date format"
+        data_type: date
+      - name: year_number
+        description: "The year component of the date"
+        data_type: number(4,0)
+      - name: quarter_number
+        description: "The quarter component of the date"
+        data_type: number(1,0)
+      - name: month_number
+        description: "The month component of the date" 
+        data_type: number(2,0)
+      - name: month_name
+        description: "The full name of the month"
+        data_type: varchar(20)
+      - name: month_abbrev
+        description: "The abbreviated name of the month"
+        data_type: varchar(10)
+      - name: day_number
+        description: "The day component of the date"
+        data_type: number(2,0)
+      - name: day_of_week
+        description: "The day of the week (1=Monday, 7=Sunday)"
+        data_type: number(1,0)
+      - name: day_name
+        description: "The full name of the day of the week"
+        data_type: varchar(20)
+      - name: week_number
+        description: "The week of the year (1-53)"
+        data_type: number(2,0)  
+      - name: is_weekend
+        description: "Boolean indicating if the date is a weekend"
+        data_type: boolean
+      - name: is_month_start 
+        description: "Boolean indicating if the date is the first day of the month"
+        data_type: boolean
+      - name: is_month_end
+        description: "Boolean indicating if the date is the last day of the month"
+        data_type: boolean
+      - name: is_quarter_start
+        description: "Boolean indicating if the date is the first day of the quarter"
+        data_type: boolean
+      - name: is_quarter_end
+        description: "Boolean indicating if the date is the last day of the quarter" 
+        data_type: boolean
+      - name: is_year_start
+        description: "Boolean indicating if the date is the first day of the year"
+        data_type: boolean
+      - name: is_year_end
+        description: "Boolean indicating if the date is the last day of the year"
+        data_type: boolean
+      - name: load_ts
+        description: "Timestamp when the record was loaded"
+        data_type: timestamp_ltz  
+
+        

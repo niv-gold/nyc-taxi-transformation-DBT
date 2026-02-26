@@ -1,0 +1,51 @@
+version: 2
+models:
+  - name: STG_DIM_TIME
+    description: "Staging model for the time dimension"
+    config:
+      schema: STAGING
+    columns:
+      - name: date_key
+        description: "The date key in YYYYMMDD format"
+      - name: date_day
+        description: "The date in date format"
+      - name: year_number
+        description: "The year component of the date"
+      - name: quarter_number
+        description: "The quarter component of the date"
+      - name: month_number
+        description: "The month component of the date"
+      - name: month_name
+        description: "The full name of the month"
+      - name: month_abbrev
+        description: "The abbreviated name of the month"
+      - name: day_of_month
+        description: "The day component of the date"
+      - name: day_of_week
+        description: "The day of the week (1=Monday, 7=Sunday)"
+      - name: day_name
+        description: "The full name of the day of the week"
+      - name: week_number
+        description: "The week of the year (1-53)"
+      - name: is_weekend
+        description: "Boolean indicating if the date is a weekend"
+      - name: is_month_start
+        description: "Boolean indicating if the date is the first day of the month"
+      - name: is_month_end
+        description: "Boolean indicating if the date is the last day of the month"
+      - name: is_quarter_start
+        description: "Boolean indicating if the date is the first day of the quarter"
+      - name: is_quarter_end
+        description: "Boolean indicating if the date is the last day of the quarter"
+      - name: is_year_start
+        description: "Boolean indicating if the date is the first day of the year"
+      - name: is_year_end
+        description: "Boolean indicating if the date is the last day of the year"
+      - name: ingest_ts
+        description: "Timestamp from source row ingestion"
+      - name: record_source
+        description: "Record source identifier"
+      - name: load_ts
+        description: "Timestamp when the record was loaded"
+      - name: hdiff
+        description: "Hashdiff built from the business-descriptive attributes"
