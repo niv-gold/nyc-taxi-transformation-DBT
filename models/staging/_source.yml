@@ -1,7 +1,41 @@
 version: 2
 sources:
-  - name: seeds    
+  - name: raw_seeds    
     schema: RAW_SEEDS
     tables:
       - name: dim_time
         description: "Staging model for the time dimension"
+        columns:
+          - name: DATE_KEY
+          - name: DATE_DAY
+          - name: YEAR
+          - name: QUARTER
+          - name: MONTH
+          - name: MONTH_NAME
+          - name: MONTH_ABBREV
+          - name: DAY
+          - name: DAY_OF_WEEK
+          - name: DAY_NAME
+          - name: WEEK_OF_YEAR
+          - name: IS_WEEKEND
+          - name: IS_MONTH_START
+          - name: IS_MONTH_END
+          - name: IS_QUARTER_START
+          - name: IS_QUARTER_END
+          - name: IS_YEAR_START
+          - name: IS_YEAR_END
+          - name: LOAD_TS
+  - name: raw
+    schema: RAW
+    tables:
+      - name: csv_landing_raw
+        description: "Schema-agnostic CSV landing table (raw_line + metadata)"
+        columns:
+          - name: raw_line
+            tests: [not_null]
+          - name: src_file_name
+          - name: src_row_number
+          - name: ingested_at
+      
+
+    

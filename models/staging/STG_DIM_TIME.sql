@@ -21,7 +21,7 @@ WITH stg_dim_time AS (
         ,IS_YEAR_START 
         ,IS_YEAR_END 
         ,LOAD_TS AS INGEST_TS 
-    FROM {{source('seeds','dim_time')}}
+    FROM {{source('raw_seeds','dim_time')}}
 ),
 hashed AS (
     SELECT     

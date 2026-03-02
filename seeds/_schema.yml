@@ -4,7 +4,7 @@ seeds:
   - name: dim_time_1980_2099          # <-- file name without .csv
     description: "Time dimension seed"
     config:
-      alias: dim_time        # 👈 This controls the Snowflake table name
+      alias: dim_time__seed        # 👈 This controls the Snowflake table name
       quote_columns: false
       column_types:
         date_key: number(8,0)
@@ -36,6 +36,8 @@ seeds:
         description: "Calendar date"
         tests:
           - not_null
+      - name: year
+        description: "Year number"
       - name: quarter
         description: "Quarter number"
         tests:
@@ -50,6 +52,12 @@ seeds:
               arguments:
                 values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                 quote: false
+      - name: month_name
+        description: "Full month name"
+      - name: month_abbrev
+        description: "Abbreviated month name"
+      - name: day
+        description: "Day number within the month"
       - name: day_of_week
         description: "Day of week where 1=Monday and 7=Sunday"
         tests:
@@ -57,6 +65,8 @@ seeds:
               arguments:
                 values: [1, 2, 3, 4, 5, 6, 7]
                 quote: false
+      - name: day_name
+        description: "Day name"
       - name: week_of_year
         description: "ISO-like week number"
         tests:

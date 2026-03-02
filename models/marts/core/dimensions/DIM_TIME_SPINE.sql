@@ -21,7 +21,7 @@ final AS (
         TO_CHAR(date_day, 'MMMM')                                AS month_name,
         TO_CHAR(date_day, 'MON')                                 AS month_abbrev,
         /* Day attributes */
-        CAST(EXTRACT(DAY FROM date_day) AS NUMBER(2,0))          AS day_number,
+        CAST(EXTRACT(DAY FROM date_day) AS NUMBER(2,0))          AS day_of_month,
         CAST(DAYOFWEEK(date_day) AS NUMBER(1,0))                 AS day_of_week,
         TO_CHAR(date_day, 'DAY')                                 AS day_name,
         /* Week */
