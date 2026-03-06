@@ -1,9 +1,9 @@
 version: 2
 sources:
-  - name: raw_seeds    
+  - name: RAW_SEEDS    
     schema: RAW_SEEDS
     tables:
-      - name: dim_time
+      - name: DIM_TIME
         description: "Staging model for the time dimension"
         columns:
           - name: DATE_KEY
@@ -25,10 +25,10 @@ sources:
           - name: IS_YEAR_START
           - name: IS_YEAR_END
           - name: LOAD_TS
-  - name: raw
+  - name: RAW
     schema: RAW
     tables:
-      - name: csv_landing_raw
+      - name: CSV_LANDING_RAW
         description: "Schema-agnostic CSV landing table (raw_line + metadata)"
         columns:
           - name: raw_line

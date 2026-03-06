@@ -4,6 +4,7 @@ models:
     description: "Staging model for the time dimension"
     config:
       schema: STAGING
+      tags: ['dim']
     columns:
       - name: date_key
         description: "The date key in YYYYMMDD format"
@@ -41,6 +42,29 @@ models:
         description: "Boolean indicating if the date is the first day of the year"
       - name: is_year_end
         description: "Boolean indicating if the date is the last day of the year"
+      - name: ingest_ts
+        description: "Timestamp from source row ingestion"
+      - name: record_source
+        description: "Record source identifier"
+      - name: load_ts
+        description: "Timestamp when the record was loaded"
+      - name: hdiff
+        description: "Hashdiff built from the business-descriptive attributes"
+  - name: RAW_TAXI_ZONE
+    description: "Staging model for the taxi zone lookup table"
+    config:
+      schema: RAW
+      alias: TAXI_ZONE_RAW
+      tags: ['dim']
+    columns:
+      - name: location_id
+        description: "The unique identifier for the taxi zone"
+      - name: borough
+        description: "The borough in which the taxi zone is located"
+      - name: zone
+        description: "The name of the taxi zone"
+      - name: service_zone
+        description: "The service zone classification for the taxi zone"
       - name: ingest_ts
         description: "Timestamp from source row ingestion"
       - name: record_source

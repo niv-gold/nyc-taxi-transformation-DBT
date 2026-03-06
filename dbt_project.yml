@@ -48,6 +48,16 @@ models:
       +schema: REFINE
     marts:
       +schema: MARTS
+      core:
+        dimensions:
+          +tags: ['shared_dims']
+      domains:
+        finance:
+          dimensions:
+            +tags: ['finance_dims']
+        marketing:
+          dimensions:
+            +tags: ['marketing_dims']
 
 # Configuring seeds
 seeds:
@@ -63,3 +73,10 @@ snapshots:
   nyc_taxi:
     # Applies to all files under snapshots/
     +schema: SNAPSHOT
+
+vars:
+  unknown_str: "Missing"
+  unknown_int: -1
+  unknown_date: "1900-01-01"
+  unknown_system: "System.DefaultKey"
+  unknown_bool: false

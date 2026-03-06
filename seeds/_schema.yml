@@ -4,7 +4,7 @@ seeds:
   - name: dim_time_1980_2099          # <-- file name without .csv
     description: "Time dimension seed"
     config:
-      alias: dim_time__seed        # 👈 This controls the Snowflake table name
+      alias: DIM_TIME      # 👈 This controls the Snowflake table name
       quote_columns: false
       column_types:
         date_key: number(8,0)
@@ -90,3 +90,42 @@ seeds:
         description: "Last day of year indicator"
       - name: LOAD_TS
         description: "Ingestion timestamp"
+
+  - name: currencies_exchange
+    description: "Daily currency exchange rates seed"
+    config:
+      quote_columns: false
+      column_types:
+        currency_id: number(10,0)
+        currency_code: varchar(10)
+        rate_date: date
+        base_currency: varchar(10)
+        usd_to_currency_rate: number(18,6)
+        currency_to_usd_rate: number(18,6)
+        source: varchar(50)
+        created_at: timestamp_tz
+    columns:
+      - name: currency_id
+        description: "Identifier of the target currency"
+        tests:
+          - not_null
+      - name: currency_code
+        description: "ISO currency code for the target currency"
+        tests:
+          - not_null
+      - name: rate_date
+        description: "Date for which the exchange rates are valid"
+        tests:
+          - not_null
+      - name: base_currency
+        description: "Base currency code used for conversion"
+        tests:
+          - not_null
+      - name: usd_to_currency_rate
+        description: "Conversion rate from USD to the target currency"
+      - name: currency_to_usd_rate
+        description: "Conversion rate from target currency to USD"
+      - name: source
+        description: "Origin/source label for the generated rate"
+      - name: created_at
+        description: "Timestamp when the row was generated"
