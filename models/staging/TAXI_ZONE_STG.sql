@@ -56,10 +56,7 @@ hashed_col AS (
         {{ dbt_utils.generate_surrogate_key(['LOCATION_ID', 'INGEST_TS']) }} AS HSKEY,
         {{ dbt_utils.generate_surrogate_key(['LOCATION_ID',
         'BOROUGH', 'ZONE', 'SERVICE_ZONE']) }} AS HDIFF,
-        '{{ run_started_at }}' AS LOAD_TS,
-        '{{ run_started_at }}' as valid_from,
-        CAST('2999-12-31' as timestamp) as valid_to,
-        1 as is_current
+        '{{ run_started_at }}' AS LOAD_TS
     FROM union_data
 ) 
 SELECT *
