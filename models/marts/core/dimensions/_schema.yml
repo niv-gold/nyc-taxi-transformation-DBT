@@ -1,7 +1,7 @@
 version: 2
 models:
   - name: DIM_TIME_SPINE
-    description: "Spine model for the time dimension"
+    description: "Creating the entire date span for a manually defined range."
     config:
       contract:
         enforced: true
@@ -65,7 +65,7 @@ models:
         data_type: timestamp_ltz
 
   - name: DIM_TIME
-    description: "Time dimension model"
+    description: "Time dimension loaded from a CSV file located in SEEDS."
     config:
       materialized: table
     columns:

@@ -1,16 +1,13 @@
--- This Model name was aliased in the "_schema.yml" file to match the DB convention.
--- Table name is "TAXI_ZONE_RAW"
-
-{{config(materialized='view')}}
+{{config(materialized='table')}}
 WITH source_data AS (
     SELECT
         raw_line,
         src_file_name,
         src_row_number,
         ingested_at,
-        'Snowflake.taxi_zone' as RECORD_SOURCE 
+        'csv file' as RECORD_SOURCE 
     FROM {{ source('RAW', 'CSV_LANDING_RAW') }}
-    WHERE src_file_name ILIKE '%taxi_zone_lookup%' 
+    WHERE src_file_name ILIKE '%taxi_zone_lookup%'
 ),
 parsed_data AS (
     SELECT
@@ -40,13 +37,13 @@ history_data AS (
 default_record AS (
     SELECT
         {{ unknown_int() }} AS LOCATION_ID,
-        {{ unknown_str() }} AS BOROUGH,
-        {{ unknown_str() }} AS ZONE,
-        {{ unknown_str() }} AS SERVICE_ZONE,
-        {{ unknown_system() }} AS SRC_FILE_NAME,
+        {{ unknown_system() }} AS BOROUGH,
+        {{ unknown_system() }} AS ZONE,
+        {{ unknown_system() }} AS SERVICE_ZONE,
+        {{ unknown_str() }} AS SRC_FILE_NAME,
         {{ unknown_int() }} AS SRC_ROW_NUMBER,
         {{ unknown_date() }} AS INGEST_TS,        
-        {{ unknown_system() }} AS RECORD_SOURCE
+        {{ unknown_str() }} AS RECORD_SOURCE
 ),
 union_data AS (
     SELECT * FROM history_data
@@ -55,11 +52,15 @@ union_data AS (
 ),
 hashed_col AS (
     SELECT
-        *,
+        * EXCLUDE(SRC_ROW_NUMBER),
+        {{ dbt_utils.generate_surrogate_key(['LOCATION_ID', 'INGEST_TS']) }} AS HSKEY,
         {{ dbt_utils.generate_surrogate_key(['LOCATION_ID',
-        'BOROUGH', 'ZONE', 'SERVICE_ZONE']) }} AS HDIFF
+        'BOROUGH', 'ZONE', 'SERVICE_ZONE']) }} AS HDIFF,
+        '{{ run_started_at }}' AS LOAD_TS,
+        '{{ run_started_at }}' as valid_from,
+        CAST('2999-12-31' as timestamp) as valid_to,
+        1 as is_current
     FROM union_data
-)
+) 
 SELECT *
 FROM hashed_col
-order by LOCATION_ID

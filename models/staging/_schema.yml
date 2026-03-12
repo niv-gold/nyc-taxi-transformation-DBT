@@ -8,6 +8,9 @@ models:
     columns:
       - name: date_key
         description: "The date key in YYYYMMDD format"
+        tests:
+          - unique
+          - not_null
       - name: date_day
         description: "The date in date format"
       - name: year_number
@@ -50,15 +53,16 @@ models:
         description: "Timestamp when the record was loaded"
       - name: hdiff
         description: "Hashdiff built from the business-descriptive attributes"
-  - name: RAW_TAXI_ZONE
+  - name: TAXI_ZONE_STG
     description: "Staging model for the taxi zone lookup table"
     config:
-      schema: RAW
-      alias: TAXI_ZONE_RAW
+      schema: STAGING
       tags: ['dim']
     columns:
       - name: location_id
         description: "The unique identifier for the taxi zone"
+        tests:
+          - not_null
       - name: borough
         description: "The borough in which the taxi zone is located"
       - name: zone
@@ -73,3 +77,80 @@ models:
         description: "Timestamp when the record was loaded"
       - name: hdiff
         description: "Hashdiff built from the business-descriptive attributes"
+      - name: hskey
+        description: "Hashkey built from the natural key (location_id)"
+        tests:
+          - unique
+          - not_null
+      - name: effective_from
+        description: "The timestamp when the record became effective"
+      - name: effective_to
+        description: "The timestamp when the record ceased to be effective"
+      - name: is_current
+        description: "Boolean indicating if the record is the current version"
+  - name: TAXI_ZONE_HIST_multi_vers
+    description: "SCD Type 2 history table for taxi zones, preserving all intermediate versions within each batch"
+    config:
+      schema: STAGING
+      tags: ['dim']
+    columns:
+      - name: location_sk
+        description: "Surrogate key generated from natural key and tracked columns"
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        tests:
+          - not_null
+      - name: borough
+        description: "The borough in which the taxi zone is located"
+      - name: zone
+        description: "The name of the taxi zone"
+      - name: service_zone
+        description: "The service zone classification for the taxi zone"
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+      - name: record_source
+        description: "Record source identifier"
+      - name: _row_hash
+        description: "Hash diff used for change detection"
+      - name: valid_from
+        description: "The timestamp when this version became effective"
+      - name: valid_to
+        description: "The timestamp when this version was superseded"
+      - name: is_current
+        description: "Boolean indicating if the record is the current version"
+  - name: TAXI_ZONE_HIST_single_vers
+    description: "SCD Type 2 history table for taxi zones, keeping only the latest version per natural key in each batch"
+    config:
+      schema: STAGING
+      tags: ['dim']
+    columns:
+      - name: location_sk
+        description: "Surrogate key generated from natural key and tracked columns"
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        tests:
+          - not_null
+      - name: borough
+        description: "The borough in which the taxi zone is located"
+      - name: zone
+        description: "The name of the taxi zone"
+      - name: service_zone
+        description: "The service zone classification for the taxi zone"
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+      - name: record_source
+        description: "Record source identifier"
+      - name: _row_hash
+        description: "Hash diff used for change detection"
+      - name: valid_from
+        description: "The timestamp when this version became effective"
+      - name: valid_to
+        description: "The timestamp when this version was superseded"
+      - name: is_current
+        description: "Boolean indicating if the record is the current version"

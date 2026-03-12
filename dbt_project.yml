@@ -23,6 +23,8 @@ macro-paths:
   - macros
 snapshot-paths:
   - snapshots
+docs-paths:
+  - docs
 
 target-path: target # directory which will store compiled SQL files
 clean-targets:
@@ -75,8 +77,8 @@ snapshots:
     +schema: SNAPSHOT
 
 vars:
-  unknown_str: "Missing"
+  unknown_str: "'Missing'"
   unknown_int: -1
-  unknown_date: "1900-01-01"
-  unknown_system: "System.DefaultKey"
+  unknown_date: "'1900-01-01'"
+  unknown_system: "'System.DefaultKey'"
   unknown_bool: false
