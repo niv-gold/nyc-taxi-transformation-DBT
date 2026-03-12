@@ -10,5 +10,5 @@
     }}
     
     SELECT *
-    FROM {{ ref('STG_DIM_TIME') }}
+    FROM {{ ref('DIM_TIME_STG') }}
 {% endsnapshot %}

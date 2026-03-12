@@ -82,7 +82,7 @@ models:
         description: "The quarter component of the date"
         data_type: number(1,0)
       - name: month_number
-        description: "The month component of the date" 
+        description: "The month component of the date"
         data_type: number(2,0)
       - name: month_name
         description: "The full name of the month"
@@ -101,11 +101,11 @@ models:
         data_type: varchar(20)
       - name: week_number
         description: "The week of the year (1-53)"
-        data_type: number(2,0)  
+        data_type: number(2,0)
       - name: is_weekend
         description: "Boolean indicating if the date is a weekend"
         data_type: boolean
-      - name: is_month_start 
+      - name: is_month_start
         description: "Boolean indicating if the date is the first day of the month"
         data_type: boolean
       - name: is_month_end
@@ -115,7 +115,7 @@ models:
         description: "Boolean indicating if the date is the first day of the quarter"
         data_type: boolean
       - name: is_quarter_end
-        description: "Boolean indicating if the date is the last day of the quarter" 
+        description: "Boolean indicating if the date is the last day of the quarter"
         data_type: boolean
       - name: is_year_start
         description: "Boolean indicating if the date is the first day of the year"
@@ -128,6 +128,216 @@ models:
         data_type: timestamp_ltz
       - name: load_ts
         description: "Timestamp when the record was loaded"
-        data_type: timestamp_ltz  
+        data_type: timestamp_ltz
 
-        
+  - name: TAXI_ZONE_HIST_multi_vers
+    description: "SCD Type 2 — taxi zone history preserving all intermediate versions within each batch"
+    columns:
+      - name: location_sk
+        description: "Surrogate key generated from natural key, tracked columns, and ingest_ts"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        data_type: varchar
+        tests:
+          - not_null
+      - name: borough
+        description: "The borough in which the taxi zone is located"
+        data_type: varchar
+      - name: zone
+        description: "The name of the taxi zone"
+        data_type: varchar
+      - name: service_zone
+        description: "The service zone classification for the taxi zone"
+        data_type: varchar
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+        data_type: varchar
+      - name: record_source
+        description: "Record source identifier"
+        data_type: varchar
+      - name: _row_hash
+        description: "Hash diff used for change detection"
+        data_type: varchar
+      - name: valid_from
+        description: "The timestamp when this version became effective"
+        data_type: timestamp_ntz
+      - name: valid_to
+        description: "The timestamp when this version was superseded (2999-12-31 if current)"
+        data_type: timestamp_ntz
+      - name: is_current
+        description: "True if this is the active version of the record"
+        data_type: boolean
+
+  - name: TAXI_ZONE_HIST_single_vers
+    description: "SCD Type 2 — taxi zone history keeping only the latest version per natural key in each batch"
+    columns:
+      - name: location_sk
+        description: "Surrogate key generated from natural key, tracked columns, and ingest_ts"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        data_type: varchar
+        tests:
+          - not_null
+      - name: borough
+        description: "The borough in which the taxi zone is located"
+        data_type: varchar
+      - name: zone
+        description: "The name of the taxi zone"
+        data_type: varchar
+      - name: service_zone
+        description: "The service zone classification for the taxi zone"
+        data_type: varchar
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+        data_type: varchar
+      - name: record_source
+        description: "Record source identifier"
+        data_type: varchar
+      - name: _row_hash
+        description: "Hash diff used for change detection"
+        data_type: varchar
+      - name: valid_from
+        description: "The timestamp when this version became effective"
+        data_type: timestamp_ntz
+      - name: valid_to
+        description: "The timestamp when this version was superseded (2999-12-31 if current)"
+        data_type: timestamp_ntz
+      - name: is_current
+        description: "True if this is the active version of the record"
+        data_type: boolean
+
+  - name: TAXI_ZONE_HIST_type3
+    description: "SCD Type 3 — taxi zone dimension storing current and previous values side-by-side"
+    columns:
+      - name: location_sk
+        description: "Surrogate key derived from natural key (stable — never changes)"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: borough
+        description: "Current borough value"
+        data_type: varchar
+      - name: prev_borough
+        description: "Previous borough value (null if no prior version exists)"
+        data_type: varchar
+      - name: zone
+        description: "Current zone name"
+        data_type: varchar
+      - name: prev_zone
+        description: "Previous zone name (null if no prior version exists)"
+        data_type: varchar
+      - name: service_zone
+        description: "Current service zone classification"
+        data_type: varchar
+      - name: prev_service_zone
+        description: "Previous service zone classification (null if no prior version exists)"
+        data_type: varchar
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+        data_type: varchar
+      - name: record_source
+        description: "Record source identifier"
+        data_type: varchar
+      - name: _row_hash
+        description: "Hash diff of the current version"
+        data_type: varchar
+      - name: effective_from
+        description: "Timestamp when the current version became active"
+        data_type: timestamp_ntz
+      - name: prev_effective_from
+        description: "Timestamp when the previous version was active (null if no prior version)"
+        data_type: timestamp_ntz
+
+  - name: TAXI_ZONE_DIM
+    description: "SCD Type 4 (current table) — always reflects the latest version of each taxi zone; history lives in TAXI_ZONE_DIM_HIST"
+    columns:
+      - name: location_sk
+        description: "Surrogate key derived from natural key (stable — never changes)"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: borough
+        description: "Current borough value"
+        data_type: varchar
+      - name: zone
+        description: "Current zone name"
+        data_type: varchar
+      - name: service_zone
+        description: "Current service zone classification"
+        data_type: varchar
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+        data_type: varchar
+      - name: record_source
+        description: "Record source identifier"
+        data_type: varchar
+      - name: _row_hash
+        description: "Hash diff of the current version"
+        data_type: varchar
+      - name: effective_from
+        description: "Timestamp when this version became active"
+        data_type: timestamp_ntz
+
+  - name: TAXI_ZONE_DIM_HIST
+    description: "SCD Type 4 (history table) — full audit trail of all taxi zone versions; current snapshot lives in TAXI_ZONE_DIM"
+    columns:
+      - name: location_sk
+        description: "Surrogate key generated from natural key, tracked columns, and ingest_ts"
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: location_nk
+        description: "Natural key (location_id) for the taxi zone"
+        data_type: varchar
+        tests:
+          - not_null
+      - name: borough
+        description: "Borough value for this version"
+        data_type: varchar
+      - name: zone
+        description: "Zone name for this version"
+        data_type: varchar
+      - name: service_zone
+        description: "Service zone classification for this version"
+        data_type: varchar
+      - name: src_file_name
+        description: "Name of the source file the record was loaded from"
+        data_type: varchar
+      - name: record_source
+        description: "Record source identifier"
+        data_type: varchar
+      - name: _row_hash
+        description: "Hash diff used for change detection"
+        data_type: varchar
+      - name: valid_from
+        description: "The timestamp when this version became effective"
+        data_type: timestamp_ntz
+      - name: valid_to
+        description: "The timestamp when this version was superseded (2999-12-31 if current)"
+        data_type: timestamp_ntz
+      - name: is_current
+        description: "True if this is the active version of the record"
+        data_type: boolean
