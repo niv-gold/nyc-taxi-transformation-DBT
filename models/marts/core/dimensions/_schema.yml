@@ -1,7 +1,7 @@
 version: 2
 models:
   - name: DIM_TIME_SPINE
-    description: "Spine model for the time dimension"
+    description: "Creating the entire date span for a manually defined range."
     config:
       contract:
         enforced: true
@@ -27,7 +27,7 @@ models:
       - name: month_abbrev
         description: "The abbreviated name of the month"
         data_type: varchar(10)
-      - name: day_number
+      - name: day_of_month
         description: "The day component of the date"
         data_type: number(2,0)
       - name: day_of_week
@@ -65,7 +65,7 @@ models:
         data_type: timestamp_ltz
 
   - name: DIM_TIME
-    description: "Time dimension model"
+    description: "Time dimension loaded from a CSV file located in SEEDS."
     config:
       materialized: table
     columns:
@@ -90,7 +90,7 @@ models:
       - name: month_abbrev
         description: "The abbreviated name of the month"
         data_type: varchar(10)
-      - name: day_number
+      - name: day_of_month
         description: "The day component of the date"
         data_type: number(2,0)
       - name: day_of_week
@@ -123,6 +123,9 @@ models:
       - name: is_year_end
         description: "Boolean indicating if the date is the last day of the year"
         data_type: boolean
+      - name: ingest_ts
+        description: "Timestamp from source row ingestion"
+        data_type: timestamp_ltz
       - name: load_ts
         description: "Timestamp when the record was loaded"
         data_type: timestamp_ltz  
